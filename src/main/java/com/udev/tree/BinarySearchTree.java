@@ -6,6 +6,16 @@ package com.udev.tree;
  * Time: 7:58 PM
  */
 public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchTree<T> {
+
+    private Node<T> node;
+    private int size;
+
+    private static class Node<T extends Comparable<T>> {
+        private T data;
+        private Node<T> leftChild;
+        private Node<T> rightChild;
+    }
+
     /**
      * Adds a new object into the tree.
      *
@@ -16,7 +26,26 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
      */
     @Override
     public T add(T obj) throws IllegalArgumentException {
-        return null;
+        if (obj == null) {
+            throw new IllegalArgumentException("The object to add must be not null");
+        }
+        T data = null;
+        if (this.node == null) {
+            this.node = new Node<T>();
+            data = obj;
+            this.node.data = data;
+        }
+        else {
+            Node currentNode = node;
+            while (currentNode != null) {
+                if (currentNode.data.compareTo(obj) == 0) {
+                    return obj;
+                }
+                // TODO: implement
+            }
+        }
+        size++;
+        return data;
     }
 
     /**
@@ -28,6 +57,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
      */
     @Override
     public boolean contains(T obj) throws IllegalArgumentException {
+        // TODO: implement
         return false;
     }
 
@@ -41,6 +71,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
      */
     @Override
     public T delete(T obj) throws IllegalArgumentException {
+        // TODO: implement
         return null;
     }
 
@@ -49,6 +80,6 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
      */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 }
