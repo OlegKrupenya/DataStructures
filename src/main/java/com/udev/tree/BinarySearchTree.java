@@ -37,11 +37,26 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
         }
         else {
             Node currentNode = node;
+            Node parent = node;
             while (currentNode != null) {
                 if (currentNode.data.compareTo(obj) == 0) {
                     return obj;
                 }
-                // TODO: implement
+                if (currentNode.data.compareTo(obj) > 0) {
+                    parent = currentNode;
+                    currentNode = currentNode.leftChild;
+                } else {
+                    parent = currentNode;
+                    currentNode = currentNode.rightChild;
+                }
+            }
+            Node<T> newNode = new Node<T>();
+            data = obj;
+            newNode.data = data;
+            if (parent.data.compareTo(obj) > 0) {
+                parent.leftChild = newNode;
+            } else {
+                parent.rightChild = newNode;
             }
         }
         size++;
