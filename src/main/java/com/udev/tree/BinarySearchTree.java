@@ -85,8 +85,42 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
      */
     @Override
     public T delete(T obj) throws IllegalArgumentException {
-        // TODO: implement
-        return null;
+        if (obj == null) {
+            throw new IllegalArgumentException("The object to delete must be not null");
+        }
+        Node<T> nodeToDelete = getNodeByValue(obj);
+        if (nodeToDelete == null) {
+            return null;
+        }
+        Node<T> leftChild = nodeToDelete.leftChild;
+        Node<T> rightChild = nodeToDelete.rightChild;
+        if (leftChild == null && rightChild == null) {
+            nodeToDelete.data = null;
+        } else {
+            if (leftChild == null && rightChild != null) {
+                Node<T> leftMin = findMinInSubTree(rightChild);
+                leftMin.rightChild = rightChild;
+                nodeToDelete = leftMin;
+            } else if (leftChild != null && rightChild == null) {
+                Node<T> rightMax = findMaxInSubTree(leftChild);
+                rightMax.leftChild = leftChild;
+                nodeToDelete = rightMax;
+            } else {
+                Node<T> leftMin = findMinInSubTree(rightChild);
+                nodeToDelete.data = leftMin.data;
+                nodeToDelete.leftChild = leftMin.leftChild;
+                nodeToDelete.rightChild = leftMin.rightChild;
+                if (leftMin.equals(rightChild)) {
+                    nodeToDelete.rightChild = rightChild.rightChild;
+                } else {
+                    nodeToDelete.rightChild = rightChild;
+                }
+                nodeToDelete.leftChild = leftChild;
+                // TODO: Remove old object after copying
+            }
+        }
+        size--;
+        return obj;
     }
 
     /**
@@ -118,5 +152,19 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
             }
         }
         return null;
+    }
+
+    private Node<T> findMinInSubTree(Node<T> currentNode) {
+        while (currentNode.leftChild != null) {
+            currentNode = currentNode.leftChild;
+        }
+        return currentNode;
+    }
+
+    private Node<T> findMaxInSubTree(Node<T> currentNode) {
+        while (currentNode.rightChild != null) {
+            currentNode = currentNode.rightChild;
+        }
+        return currentNode;
     }
 }
