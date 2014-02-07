@@ -72,8 +72,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
      */
     @Override
     public boolean contains(T obj) throws IllegalArgumentException {
-        // TODO: implement
-        return false;
+        return getNodeByValue(obj) != null;
     }
 
     /**
@@ -96,5 +95,28 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
     @Override
     public int size() {
         return size;
+    }
+
+    /**
+     * Finds {@link com.udev.tree.BinarySearchTree.Node} by its data.
+     * @param obj The criteria of the search.
+     * @return {@link com.udev.tree.BinarySearchTree.Node} if it exists in the tree.
+     */
+    private Node<T> getNodeByValue(T obj) {
+        if (obj == null) {
+            throw new IllegalArgumentException("The object for the search must be not null");
+        }
+        Node<T> currentNode = node;
+        while (currentNode != null) {
+            if (currentNode.data.compareTo(obj) == 0) {
+                return currentNode;
+            }
+            if (currentNode.data.compareTo(obj) > 0) {
+                currentNode = currentNode.leftChild;
+            } else {
+                currentNode = currentNode.rightChild;
+            }
+        }
+        return null;
     }
 }
