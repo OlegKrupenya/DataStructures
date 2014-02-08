@@ -58,6 +58,7 @@ public class BinarySearchTreeTest {
         this.tree.add(7);
         this.tree.add(14);
         this.tree.add(13);
+
         Integer root = this.tree.delete(8);
         Integer left = this.tree.delete(3);
         Integer right = this.tree.delete(10);

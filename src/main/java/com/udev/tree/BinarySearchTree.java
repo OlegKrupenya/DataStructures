@@ -35,8 +35,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
             this.node = new Node<T>();
             data = obj;
             this.node.data = data;
-        }
-        else {
+        } else {
             Node currentNode = node;
             Node parent = node;
             while (currentNode != null) {
@@ -97,12 +96,13 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
         Node<T> leftChild = nodeToDelete.leftChild;
         Node<T> rightChild = nodeToDelete.rightChild;
         if (leftChild == null && rightChild == null) {
-            if (nodeToDelete.parent.rightChild.equals(nodeToDelete)) {
+            if (nodeToDelete.parent != null && nodeToDelete.parent.rightChild != null
+                    && nodeToDelete.parent.rightChild.equals(nodeToDelete)) {
                 nodeToDelete.parent.rightChild = null;
-            } else {
+            } else if (nodeToDelete.parent != null) {
                 nodeToDelete.parent.leftChild = null;
             }
-            nodeToDelete.data = null;
+            nodeToDelete = null;
         } else {
             if (leftChild == null && rightChild != null) {
                 Node<T> leftMin = findMinInSubTree(rightChild);
@@ -110,8 +110,20 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
                 nodeToDelete = leftMin;
             } else if (leftChild != null && rightChild == null) {
                 Node<T> rightMax = findMaxInSubTree(leftChild);
-                rightMax.leftChild = leftChild;
-                nodeToDelete = rightMax;
+                if (rightMax.equals(leftChild)) {
+                    rightMax.parent = nodeToDelete.parent;
+                    rightMax.parent.rightChild = rightMax;
+                    rightMax.rightChild = rightChild;
+                    if (rightChild != null) {
+                        rightChild.parent = rightMax;
+                    }
+                    nodeToDelete = null;
+                } else {
+                    rightMax.parent.rightChild = null;
+                    rightMax.parent = nodeToDelete.parent;
+                    rightMax.parent.rightChild = rightMax;
+
+                }
             } else {
                 Node<T> leftMin = findMinInSubTree(rightChild);
                 leftMin.parent.leftChild = leftMin.rightChild;
@@ -124,8 +136,12 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
                     nodeToDelete.rightChild = rightChild;
                 }
                 nodeToDelete.leftChild = leftChild;
-                nodeToDelete.rightChild.parent = nodeToDelete;
-                nodeToDelete.leftChild.parent = nodeToDelete;
+                if (nodeToDelete.rightChild != null) {
+                    nodeToDelete.rightChild.parent = nodeToDelete;
+                }
+                if (nodeToDelete.leftChild != null) {
+                    nodeToDelete.leftChild.parent = nodeToDelete;
+                }
             }
         }
         size--;
@@ -142,12 +158,13 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
 
     /**
      * Finds {@link com.udev.tree.BinarySearchTree.Node} by its data.
+     *
      * @param obj The criteria of the search.
      * @return {@link com.udev.tree.BinarySearchTree.Node} if it exists in the tree.
      */
     private Node<T> getNodeByValue(T obj) {
         if (obj == null) {
-            throw new IllegalArgumentException("The object for the search must be not null");
+            return null;
         }
         Node<T> currentNode = node;
         while (currentNode != null) {
