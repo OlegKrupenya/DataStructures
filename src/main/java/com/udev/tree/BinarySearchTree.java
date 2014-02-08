@@ -12,6 +12,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
 
     private static class Node<T extends Comparable<T>> {
         private T data;
+        private Node<T> parent;
         private Node<T> leftChild;
         private Node<T> rightChild;
     }
@@ -53,6 +54,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
             Node<T> newNode = new Node<T>();
             data = obj;
             newNode.data = data;
+            newNode.parent = parent;
             if (parent.data.compareTo(obj) > 0) {
                 parent.leftChild = newNode;
             } else {
@@ -95,6 +97,11 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
         Node<T> leftChild = nodeToDelete.leftChild;
         Node<T> rightChild = nodeToDelete.rightChild;
         if (leftChild == null && rightChild == null) {
+            if (nodeToDelete.parent.rightChild.equals(nodeToDelete)) {
+                nodeToDelete.parent.rightChild = null;
+            } else {
+                nodeToDelete.parent.leftChild = null;
+            }
             nodeToDelete.data = null;
         } else {
             if (leftChild == null && rightChild != null) {
@@ -107,6 +114,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
                 nodeToDelete = rightMax;
             } else {
                 Node<T> leftMin = findMinInSubTree(rightChild);
+                leftMin.parent.leftChild = leftMin.rightChild;
                 nodeToDelete.data = leftMin.data;
                 nodeToDelete.leftChild = leftMin.leftChild;
                 nodeToDelete.rightChild = leftMin.rightChild;
@@ -116,7 +124,8 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
                     nodeToDelete.rightChild = rightChild;
                 }
                 nodeToDelete.leftChild = leftChild;
-                // TODO: Remove old object after copying
+                nodeToDelete.rightChild.parent = nodeToDelete;
+                nodeToDelete.leftChild.parent = nodeToDelete;
             }
         }
         size--;
