@@ -101,13 +101,27 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
                 nodeToDelete.parent.rightChild = null;
             } else if (nodeToDelete.parent != null) {
                 nodeToDelete.parent.leftChild = null;
+            } else {
+                node = null;
             }
             nodeToDelete = null;
         } else {
             if (leftChild == null && rightChild != null) {
                 Node<T> leftMin = findMinInSubTree(rightChild);
-                leftMin.rightChild = rightChild;
-                nodeToDelete = leftMin;
+                if (leftMin.equals(rightChild)) {
+                    leftMin.parent = nodeToDelete.parent;
+                    if (nodeToDelete.equals(leftMin.parent.rightChild)) {
+                        leftMin.parent.rightChild = leftMin;
+                    } else {
+                        leftMin.parent.leftChild = leftMin;
+                    }
+                } else {
+                    leftMin.parent.leftChild = null;
+                    nodeToDelete.rightChild.parent = leftMin;
+                    leftMin.rightChild = nodeToDelete.rightChild;
+                    leftMin.parent = nodeToDelete.parent;
+                }
+                nodeToDelete = null;
             } else if (leftChild != null && rightChild == null) {
                 Node<T> rightMax = findMaxInSubTree(leftChild);
                 if (rightMax.equals(leftChild)) {
