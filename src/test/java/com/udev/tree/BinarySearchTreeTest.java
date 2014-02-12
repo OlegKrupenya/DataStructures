@@ -11,7 +11,7 @@ import org.junit.Test;
  * Time: 9:32 PM
  */
 public class BinarySearchTreeTest {
-    protected IBinarySearchTree<Integer> tree;
+    private IBinarySearchTree<Integer> tree;
 
     @Before
     public void init() {

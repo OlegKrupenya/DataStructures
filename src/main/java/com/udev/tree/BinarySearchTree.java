@@ -1,5 +1,10 @@
 package com.udev.tree;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
 /**
  * User: oleg.krupenya
  * Date: 2/5/14
@@ -10,11 +15,43 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
     private Node<T> node;
     private int size;
 
-    private static class Node<T extends Comparable<T>> {
+    protected static class Node<T extends Comparable<T>> {
         private T data;
         private Node<T> parent;
         private Node<T> leftChild;
         private Node<T> rightChild;
+
+        public T getData() {
+            return data;
+        }
+
+        public void setData(T data) {
+            this.data = data;
+        }
+
+        public Node<T> getParent() {
+            return parent;
+        }
+
+        public void setParent(Node<T> parent) {
+            this.parent = parent;
+        }
+
+        public Node<T> getLeftChild() {
+            return leftChild;
+        }
+
+        public void setLeftChild(Node<T> leftChild) {
+            this.leftChild = leftChild;
+        }
+
+        public Node<T> getRightChild() {
+            return rightChild;
+        }
+
+        public void setRightChild(Node<T> rightChild) {
+            this.rightChild = rightChild;
+        }
     }
 
     /**
@@ -169,6 +206,31 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
     @Override
     public int size() {
         return size;
+    }
+
+    /**
+     * The process of visiting each node in a tree data structure.
+     *
+     * @return {@link java.util.List} of the data.
+     */
+    @Override
+    public List<T> breadthFirstTraversal() {
+        Queue<Node<T>> queue = new ArrayDeque<Node<T>>();
+        List<T> nodes = new ArrayList<T>();
+        if (node != null) {
+            queue.add(node);
+            while (!queue.isEmpty()) {
+                Node<T> nodeFromQueue = queue.poll();
+                nodes.add(nodeFromQueue.data);
+                if (nodeFromQueue.getLeftChild() != null) {
+                    queue.add(nodeFromQueue.getLeftChild());
+                }
+                if (nodeFromQueue.getRightChild() != null) {
+                    queue.add(nodeFromQueue.getRightChild());
+                }
+            }
+        }
+        return nodes;
     }
 
     /**

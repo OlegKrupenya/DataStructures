@@ -1,5 +1,7 @@
 package com.udev.tree;
 
+import java.util.List;
+
 /**
  * User: oleg.krupenya
  * Date: 2/5/14
@@ -36,4 +38,10 @@ public interface IBinarySearchTree<T extends Comparable<T>> {
      * @return The size of the tree.
      */
     int size();
+
+    /**
+     * The process of visiting (examining and/or updating) each node in a tree data structure
+     * @return
+     */
+    List<T> breadthFirstTraversal();
 }

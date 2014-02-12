@@ -40,9 +40,34 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
      * However, if balance factor becomes less than -1 or greater than +1,
      * the subtree rooted at this node is unbalanced.
      *
-     * @param obj
+     * @param currentNode
      */
-    private void balance(T obj) {
-        // TODO: implement
+    private void balance(Node<T> currentNode) {
+        int balanceFactor = getRightBalanceFactor(currentNode) - getLeftBalanceFactor(currentNode);
+        if (balanceFactor > 1) {
+
+        } else if (balanceFactor < -1) {
+
+        }
+    }
+
+    private int getLeftBalanceFactor(Node<T> parent) {
+        int height = 0;
+        Node<T> child = parent.getLeftChild();
+        while (child != null) {
+            height++;
+            child = child.getLeftChild();
+        }
+        return height;
+    }
+
+    private int getRightBalanceFactor(Node<T> parent) {
+        int height = 0;
+        Node<T> child = parent.getRightChild();
+        while (child != null) {
+            height++;
+            child = child.getRightChild();
+        }
+        return height;
     }
 }
