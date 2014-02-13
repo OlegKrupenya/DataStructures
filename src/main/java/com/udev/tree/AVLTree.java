@@ -18,7 +18,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
      */
     @Override
     public T add(T obj) throws IllegalArgumentException {
-        return super.add(obj);
+        T added = super.add(obj);
+        balanceTree();
+        return added;
     }
 
     /**
@@ -31,7 +33,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
      */
     @Override
     public T delete(T obj) throws IllegalArgumentException {
-        return super.delete(obj);
+        T deleted = super.delete(obj);
+        balanceTree();
+        return deleted;
     }
 
     /**
@@ -44,7 +48,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
      *
      * @param currentNode
      */
-    public void balance(Node<T> currentNode) {
+    private void balance(Node<T> currentNode) {
         int balanceFactor = getBalanceFactor(currentNode);
         if (balanceFactor > 1) {
             Node<T> leftChild = currentNode.getLeftChild();
@@ -62,6 +66,24 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
             //Right Right Case
             rotateLeft(currentNode);
+        }
+    }
+
+    private void balanceTree() {
+        Node<T> tNode = this.getNode();
+        Set<T> observedNodes = new HashSet<T>();
+        while (tNode != this.getNode().getParent()) {
+            observedNodes.add(tNode.getData());
+            if (!observedNodes.contains(tNode.getData())) {
+                balance(tNode);
+            }
+            if (tNode.getLeftChild() != null && !observedNodes.contains(tNode.getLeftChild().getData())) {
+                tNode = tNode.getLeftChild();
+            } else if (tNode.getRightChild() != null && !observedNodes.contains(tNode.getRightChild().getData())) {
+                tNode = tNode.getRightChild();
+            } else {
+                tNode = tNode.getParent();
+            }
         }
     }
 

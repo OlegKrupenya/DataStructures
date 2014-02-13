@@ -49,8 +49,6 @@ public class AVLTreeTest {
         Assert.assertTrue(this.tree.contains(leftRightRight));
         Assert.assertTrue(this.tree.contains(rightRight));
         Assert.assertTrue(this.tree.contains(rightRightLeft));
-
-        this.tree.balance(this.tree.getNode());
     }
 
     @Test
@@ -61,6 +59,5 @@ public class AVLTreeTest {
         List<Integer> expected = Arrays.asList(50,30,40);
         List<Integer> list = this.tree.breadthFirstTraversal();
         Assert.assertEquals(expected, list);
-        this.tree.balance(this.tree.getNode());
     }
 }
