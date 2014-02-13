@@ -43,31 +43,31 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
      * @param currentNode
      */
     private void balance(Node<T> currentNode) {
-        int balanceFactor = getRightBalanceFactor(currentNode) - getLeftBalanceFactor(currentNode);
+        int balanceFactor = getBalanceFactor(currentNode);
         if (balanceFactor > 1) {
-
+            Node<T> leftChild = currentNode.getLeftChild();
+            if (getBalanceFactor(leftChild) == -1) { // Left right case
+                // reduce to left left case
+                // TODO: rotateLeft(currentNode);
+            }
+            // left left case
+            // TODO: rotateRight(leftChild);
         } else if (balanceFactor < -1) {
-
+            Node<T> rightChild = currentNode.getRightChild();
+            if (balanceFactor == 1) { // right left case
+                // reduce to right right case
+                // TODO: rotateRight(currentNode);
+            }
+            //Right Right Case
+            // TODO: rotateLeft(L);
         }
     }
 
-    private int getLeftBalanceFactor(Node<T> parent) {
-        int height = 0;
-        Node<T> child = parent.getLeftChild();
-        while (child != null) {
-            height++;
-            child = child.getLeftChild();
-        }
-        return height;
+    private int getBalanceFactor(Node<T> parent) {
+        return width(parent.getLeftChild()) - width(parent.getRightChild());
     }
 
-    private int getRightBalanceFactor(Node<T> parent) {
-        int height = 0;
-        Node<T> child = parent.getRightChild();
-        while (child != null) {
-            height++;
-            child = child.getRightChild();
-        }
-        return height;
+    private int width(Node<T> currentNode) {
+        return 0;
     }
 }
