@@ -50,19 +50,41 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             Node<T> leftChild = currentNode.getLeftChild();
             if (getBalanceFactor(leftChild) == -1) { // Left right case
                 // reduce to left left case
-                // TODO: rotateLeft(currentNode);
+                rotateLeft(leftChild);
             }
             // left left case
-            // TODO: rotateRight(leftChild);
+            rotateRight(currentNode);
         } else if (balanceFactor < -1) {
             Node<T> rightChild = currentNode.getRightChild();
             if (balanceFactor == 1) { // right left case
                 // reduce to right right case
-                // TODO: rotateRight(currentNode);
+                rotateRight(rightChild);
             }
             //Right Right Case
-            // TODO: rotateLeft(L);
+            rotateLeft(currentNode);
         }
+    }
+
+    private void rotateLeft(Node<T> currentNode) {
+        Node<T> rCh = currentNode.getRightChild();
+        currentNode.getParent().setLeftChild(rCh);
+        rCh.setParent(currentNode.getParent());
+        currentNode.setParent(rCh);
+        Node<T> lCh = rCh.getLeftChild();
+        lCh.setParent(currentNode);
+        currentNode.setRightChild(lCh);
+        rCh.setLeftChild(currentNode);
+    }
+
+    private void rotateRight(Node<T> currentNode) {
+        Node<T> lCh = currentNode.getLeftChild();
+        currentNode.getParent().setRightChild(lCh);
+        lCh.setLeftChild(currentNode.getParent());
+        currentNode.setParent(lCh);
+        Node<T> rCh = lCh.getRightChild();
+        rCh.setParent(currentNode);
+        currentNode.setLeftChild(rCh);
+        lCh.setRightChild(currentNode);
     }
 
     private int getBalanceFactor(Node<T> parent) {
