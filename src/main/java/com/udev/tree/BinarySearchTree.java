@@ -15,6 +15,22 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
     private Node<T> node;
     private int size;
 
+    public Node<T> getNode() {
+        return node;
+    }
+
+    public void setNode(Node<T> node) {
+        this.node = node;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     protected static class Node<T extends Comparable<T>> {
         private T data;
         private Node<T> parent;

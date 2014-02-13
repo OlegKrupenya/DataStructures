@@ -1,5 +1,7 @@
 package com.udev.tree;
 
+import java.util.*;
+
 /**
  * User: oleg.krupenya
  * Date: 2/10/14
@@ -42,7 +44,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
      *
      * @param currentNode
      */
-    private void balance(Node<T> currentNode) {
+    public void balance(Node<T> currentNode) {
         int balanceFactor = getBalanceFactor(currentNode);
         if (balanceFactor > 1) {
             Node<T> leftChild = currentNode.getLeftChild();
@@ -64,10 +66,36 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     private int getBalanceFactor(Node<T> parent) {
-        return width(parent.getLeftChild()) - width(parent.getRightChild());
+        return (width(parent.getLeftChild()) + 1) - (width(parent.getRightChild()) + 1);
     }
 
     private int width(Node<T> currentNode) {
-        return 0;
+        int maxWidth = 0;
+        int width = 0;
+        if (currentNode == null) {
+            return maxWidth;
+        }
+        Node<T> tNode = currentNode;
+        Set<T> observedNodes = new HashSet<T>();
+        while (tNode != currentNode.getParent()) {
+            observedNodes.add(tNode.getData());
+            if (tNode.getLeftChild() != null && !observedNodes.contains(tNode.getLeftChild().getData())) {
+                width++;
+                if (width > maxWidth) {
+                    maxWidth = width;
+                }
+                tNode = tNode.getLeftChild();
+            } else if (tNode.getRightChild() != null && !observedNodes.contains(tNode.getRightChild().getData())) {
+                width++;
+                if (width > maxWidth) {
+                    maxWidth = width;
+                }
+                tNode = tNode.getRightChild();
+            } else {
+                width--;
+                tNode = tNode.getParent();
+            }
+        }
+        return maxWidth;
     }
 }
