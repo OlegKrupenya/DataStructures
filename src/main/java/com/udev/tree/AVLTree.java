@@ -73,10 +73,10 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         Node<T> tNode = this.getNode();
         Set<T> observedNodes = new HashSet<T>();
         while (tNode != this.getNode().getParent()) {
-            observedNodes.add(tNode.getData());
             if (!observedNodes.contains(tNode.getData())) {
                 balance(tNode);
             }
+            observedNodes.add(tNode.getData());
             if (tNode.getLeftChild() != null && !observedNodes.contains(tNode.getLeftChild().getData())) {
                 tNode = tNode.getLeftChild();
             } else if (tNode.getRightChild() != null && !observedNodes.contains(tNode.getRightChild().getData())) {
