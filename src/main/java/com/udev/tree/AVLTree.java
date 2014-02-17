@@ -19,7 +19,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     public T add(T obj) throws IllegalArgumentException {
         T added = super.add(obj);
-        balanceTree();
+        if (size() > 2) {
+            balanceTree();
+        }
         return added;
     }
 
@@ -34,7 +36,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     public T delete(T obj) throws IllegalArgumentException {
         T deleted = super.delete(obj);
-        balanceTree();
+        if (size() > 2) {
+            balanceTree();
+        }
         return deleted;
     }
 
@@ -114,11 +118,11 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     private int width(Node<T> currentNode) {
-        int maxWidth = 0;
-        int width = 0;
         if (currentNode == null) {
-            return maxWidth;
+            return 0;
         }
+        int maxWidth = 1;
+        int width = 1;
         Node<T> tNode = currentNode;
         Set<T> observedNodes = new HashSet<T>();
         while (tNode != currentNode.getParent()) {
