@@ -92,40 +92,48 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     private void rotateLeft(Node<T> currentNode) {
-        Node<T> rCh = currentNode.getRightChild();
         if (currentNode.getParent() != null) {
-            currentNode.getParent().setLeftChild(rCh);
-        }
-        if (rCh != null) {
-            rCh.setParent(currentNode.getParent());
-        }
-        currentNode.setParent(rCh);
-        Node<T> lCh = rCh.getLeftChild();
-        if (lCh != null) {
-            lCh.setParent(currentNode);
-        }
-        currentNode.setRightChild(lCh);
-        if (rCh != null) {
-            rCh.setLeftChild(currentNode);
+            Node<T> rCh = currentNode.getRightChild();
+            if (currentNode.getParent() != null) {
+                currentNode.getParent().setLeftChild(rCh);
+            }
+            if (rCh != null) {
+                rCh.setParent(currentNode.getParent());
+            }
+            currentNode.setParent(rCh);
+            Node<T> lCh = rCh.getLeftChild();
+            if (lCh != null) {
+                lCh.setParent(currentNode);
+            }
+            currentNode.setRightChild(lCh);
+            if (rCh != null) {
+                rCh.setLeftChild(currentNode);
+            }
+        } else {
+
         }
     }
 
     private void rotateRight(Node<T> currentNode) {
-        Node<T> lCh = currentNode.getLeftChild();
         if (currentNode.getParent() != null) {
-            currentNode.getParent().setRightChild(lCh);
-        }
-        if (lCh != null) {
-            lCh.setLeftChild(currentNode.getParent());
-        }
-        currentNode.setParent(lCh);
-        Node<T> rCh = lCh.getRightChild();
-        if (rCh != null) {
-            rCh.setParent(currentNode);
-        }
-        currentNode.setLeftChild(rCh);
-        if (lCh != null) {
-            lCh.setRightChild(currentNode);
+            Node<T> lCh = currentNode.getLeftChild();
+            if (currentNode.getParent() != null) {
+                currentNode.getParent().setRightChild(lCh);
+            }
+            if (lCh != null) {
+                lCh.setLeftChild(currentNode.getParent());
+            }
+            currentNode.setParent(lCh);
+            Node<T> rCh = lCh.getRightChild();
+            if (rCh != null) {
+                rCh.setParent(currentNode);
+            }
+            currentNode.setLeftChild(rCh);
+            if (lCh != null) {
+                lCh.setRightChild(currentNode);
+            }
+        } else {
+            
         }
     }
 
