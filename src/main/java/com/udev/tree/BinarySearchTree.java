@@ -255,7 +255,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
      * @param obj The criteria of the search.
      * @return {@link com.udev.tree.BinarySearchTree.Node} if it exists in the tree.
      */
-    private Node<T> getNodeByValue(T obj) {
+    protected Node<T> getNodeByValue(T obj) {
         if (obj == null) {
             return null;
         }

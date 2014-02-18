@@ -34,21 +34,21 @@ public class AVLTreeTest {
         Integer right = this.tree.add(10);
         Integer leftRight = this.tree.add(6);
         Integer leftLeft = this.tree.add(1);
-//        Integer leftRightLeft = this.tree.add(5);
-//        Integer leftRightRight = this.tree.add(7);
-//        Integer rightRight = this.tree.add(14);
-//        Integer rightRightLeft = this.tree.add(13);
+        Integer leftRightLeft = this.tree.add(5);
+        Integer leftRightRight = this.tree.add(7);
+        Integer rightRight = this.tree.add(14);
+        Integer rightRightLeft = this.tree.add(13);
 
-        Assert.assertEquals(9, this.tree.size());
+        //Assert.assertEquals(9, this.tree.size());
         Assert.assertTrue(this.tree.contains(root));
         Assert.assertTrue(this.tree.contains(left));
         Assert.assertTrue(this.tree.contains(right));
         Assert.assertTrue(this.tree.contains(leftRight));
         Assert.assertTrue(this.tree.contains(leftLeft));
-//        Assert.assertTrue(this.tree.contains(leftRightLeft));
-//        Assert.assertTrue(this.tree.contains(leftRightRight));
-//        Assert.assertTrue(this.tree.contains(rightRight));
-//        Assert.assertTrue(this.tree.contains(rightRightLeft));
+        Assert.assertTrue(this.tree.contains(leftRightLeft));
+        Assert.assertTrue(this.tree.contains(leftRightRight));
+        Assert.assertTrue(this.tree.contains(rightRight));
+        Assert.assertTrue(this.tree.contains(rightRightLeft));
     }
 
     @Test
