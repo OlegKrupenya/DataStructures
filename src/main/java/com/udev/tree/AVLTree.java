@@ -73,6 +73,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         Node<T> tNode = this.getNode();
         Set<T> observedNodes = new HashSet<T>();
         while (tNode != this.getNode().getParent()) {
+            balance(tNode);
             observedNodes.add(tNode.getData());
             if (!observedNodes.contains(tNode.getData())) {
                 balance(tNode);
@@ -89,24 +90,40 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private void rotateLeft(Node<T> currentNode) {
         Node<T> rCh = currentNode.getRightChild();
-        currentNode.getParent().setLeftChild(rCh);
-        rCh.setParent(currentNode.getParent());
+        if (currentNode.getParent() != null) {
+            currentNode.getParent().setLeftChild(rCh);
+        }
+        if (rCh != null) {
+            rCh.setParent(currentNode.getParent());
+        }
         currentNode.setParent(rCh);
         Node<T> lCh = rCh.getLeftChild();
-        lCh.setParent(currentNode);
+        if (lCh != null) {
+            lCh.setParent(currentNode);
+        }
         currentNode.setRightChild(lCh);
-        rCh.setLeftChild(currentNode);
+        if (rCh != null) {
+            rCh.setLeftChild(currentNode);
+        }
     }
 
     private void rotateRight(Node<T> currentNode) {
         Node<T> lCh = currentNode.getLeftChild();
-        currentNode.getParent().setRightChild(lCh);
-        lCh.setLeftChild(currentNode.getParent());
+        if (currentNode.getParent() != null) {
+            currentNode.getParent().setRightChild(lCh);
+        }
+        if (lCh != null) {
+            lCh.setLeftChild(currentNode.getParent());
+        }
         currentNode.setParent(lCh);
         Node<T> rCh = lCh.getRightChild();
-        rCh.setParent(currentNode);
+        if (rCh != null) {
+            rCh.setParent(currentNode);
+        }
         currentNode.setLeftChild(rCh);
-        lCh.setRightChild(currentNode);
+        if (lCh != null) {
+            lCh.setRightChild(currentNode);
+        }
     }
 
     private int getBalanceFactor(Node<T> parent) {
@@ -117,7 +134,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         int maxWidth = 0;
         int width = 0;
         if (currentNode == null) {
-            return maxWidth;
+            return -1;
         }
         Node<T> tNode = currentNode;
         Set<T> observedNodes = new HashSet<T>();
