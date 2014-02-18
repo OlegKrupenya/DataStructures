@@ -56,7 +56,7 @@ public class AVLTreeTest {
         this.tree.add(50);
         this.tree.add(30);
         this.tree.add(40);
-        List<Integer> expected = Arrays.asList(50,30,40);
+        List<Integer> expected = Arrays.asList(40,30,50);
         List<Integer> list = this.tree.breadthFirstTraversal();
         Assert.assertEquals(expected, list);
     }
