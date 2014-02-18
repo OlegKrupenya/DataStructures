@@ -110,7 +110,16 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 rCh.setLeftChild(currentNode);
             }
         } else {
-
+            Node<T> oldRoot = this.getNode();
+            this.setNode(currentNode.getRightChild());
+            this.getNode().setParent(null);
+            Node<T> lCh = getNode().getLeftChild();
+            if (lCh != null) {
+                lCh.setParent(oldRoot);
+            }
+            oldRoot.setRightChild(lCh);
+            getNode().setLeftChild(oldRoot);
+            oldRoot.setParent(getNode());
         }
     }
 
@@ -133,16 +142,16 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 lCh.setRightChild(currentNode);
             }
         } else {
-            Node<T> oldRoot = this.getNode();
-            this.setNode(currentNode.getLeftChild());
-            this.getNode().setParent(null);
+            Node<T> oldRoot = getNode();
+            setNode(currentNode.getLeftChild());
+            getNode().setParent(null);
             Node<T> rCh = getNode().getRightChild();
             if (rCh != null) {
                 rCh.setParent(oldRoot);
             }
-                oldRoot.setLeftChild(rCh);
-            this.getNode().setRightChild(oldRoot);
-            oldRoot.setParent(this.getNode());
+            oldRoot.setLeftChild(rCh);
+            getNode().setRightChild(oldRoot);
+            oldRoot.setParent(getNode());
         }
     }
 

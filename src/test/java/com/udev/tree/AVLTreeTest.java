@@ -60,4 +60,14 @@ public class AVLTreeTest {
         List<Integer> list = this.tree.breadthFirstTraversal();
         Assert.assertEquals(expected, list);
     }
+
+    @Test
+    public void rightRightCaseTest() {
+        this.tree.add(30);
+        this.tree.add(50);
+        this.tree.add(40);
+        List<Integer> expected = Arrays.asList(40,30,50);
+        List<Integer> list = this.tree.breadthFirstTraversal();
+        Assert.assertEquals(expected, list);
+    }
 }
