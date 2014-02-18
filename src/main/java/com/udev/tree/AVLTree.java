@@ -64,7 +64,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             rotateRight(currentNode);
         } else if (balanceFactor < -1) {
             Node<T> rightChild = currentNode.getRightChild();
-            if (balanceFactor == 1) { // right left case
+            if (getBalanceFactor(rightChild) == 1) { // right left case
                 // reduce to right right case
                 rotateRight(rightChild);
             }
@@ -130,7 +130,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 currentNode.getParent().setRightChild(lCh);
             }
             if (lCh != null) {
-                lCh.setLeftChild(currentNode.getParent());
+                lCh.setParent(currentNode.getParent());
             }
             currentNode.setParent(lCh);
             Node<T> rCh = lCh.getRightChild();
