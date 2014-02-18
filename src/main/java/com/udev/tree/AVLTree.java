@@ -19,7 +19,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     public T add(T obj) throws IllegalArgumentException {
         T added = super.add(obj);
-        balanceTree();
+        if (size() > 2) {
+            balanceTree();
+        }
         return added;
     }
 
@@ -34,7 +36,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     public T delete(T obj) throws IllegalArgumentException {
         T deleted = super.delete(obj);
-        balanceTree();
+        if (size() > 2) {
+            balanceTree();
+        }
         return deleted;
     }
 
@@ -73,11 +77,10 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         Node<T> tNode = this.getNode();
         Set<T> observedNodes = new HashSet<T>();
         while (tNode != this.getNode().getParent()) {
-            balance(tNode);
-            observedNodes.add(tNode.getData());
             if (!observedNodes.contains(tNode.getData())) {
                 balance(tNode);
             }
+            observedNodes.add(tNode.getData());
             if (tNode.getLeftChild() != null && !observedNodes.contains(tNode.getLeftChild().getData())) {
                 tNode = tNode.getLeftChild();
             } else if (tNode.getRightChild() != null && !observedNodes.contains(tNode.getRightChild().getData())) {
@@ -131,11 +134,11 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     private int width(Node<T> currentNode) {
-        int maxWidth = 0;
-        int width = 0;
         if (currentNode == null) {
-            return -1;
+            return 0;
         }
+        int maxWidth = 1;
+        int width = 1;
         Node<T> tNode = currentNode;
         Set<T> observedNodes = new HashSet<T>();
         while (tNode != currentNode.getParent()) {
