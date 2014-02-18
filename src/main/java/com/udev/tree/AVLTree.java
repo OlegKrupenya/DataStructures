@@ -156,10 +156,10 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     private int getBalanceFactor(Node<T> parent) {
-        return (width(parent.getLeftChild()) + 1) - (width(parent.getRightChild()) + 1);
+        return (height(parent.getLeftChild()) + 1) - (height(parent.getRightChild()) + 1);
     }
 
-    private int width(Node<T> currentNode) {
+    private int height(Node<T> currentNode) {
         if (currentNode == null) {
             return 0;
         }
