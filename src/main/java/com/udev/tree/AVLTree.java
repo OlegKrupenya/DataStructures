@@ -61,12 +61,16 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 rotateLeft(leftChild, false);
             }
             // left left case
-            rotateRight(currentNode);
+            if (currentNode.getParent() != null) {
+                rotateRight(currentNode, true);
+            } else {
+                rotateRight(currentNode, false);
+            }
         } else if (balanceFactor < -1) {
             Node<T> rightChild = currentNode.getRightChild();
             if (getBalanceFactor(rightChild) == 1) { // right left case
                 // reduce to right right case
-                rotateRight(rightChild);
+                rotateRight(rightChild, false);
             }
             //Right Right Case
             if (currentNode.getParent() != null) {
@@ -149,24 +153,37 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
     }
 
-    private void rotateRight(Node<T> currentNode) {
+    private void rotateRight(Node<T> currentNode, boolean changeRootOfSubtree) {
         if (currentNode.getParent() != null) {
-            // TODO: check balance factor
-            Node<T> lCh = currentNode.getLeftChild();
-            if (currentNode.getParent() != null) {
-                currentNode.getParent().setRightChild(lCh);
-            }
-            if (lCh != null) {
-                lCh.setParent(currentNode.getParent());
-            }
-            currentNode.setParent(lCh);
-            Node<T> rCh = lCh.getRightChild();
-            if (rCh != null) {
-                rCh.setParent(currentNode);
-            }
-            currentNode.setLeftChild(rCh);
-            if (lCh != null) {
-                lCh.setRightChild(currentNode);
+            if (changeRootOfSubtree) {
+                Node<T> oldRoot = currentNode;
+                Node<T> newRoot = currentNode.getLeftChild();
+                newRoot.setParent(oldRoot.getParent());
+                oldRoot.getParent().setLeftChild(newRoot);
+                Node<T> rCh = newRoot.getRightChild();
+                if (rCh != null) {
+                    rCh.setParent(oldRoot);
+                }
+                oldRoot.setLeftChild(rCh);
+                oldRoot.setParent(newRoot);
+                newRoot.setRightChild(oldRoot);
+            } else {
+                Node<T> lCh = currentNode.getLeftChild();
+                if (currentNode.getParent() != null) {
+                    currentNode.getParent().setRightChild(lCh);
+                }
+                if (lCh != null) {
+                    lCh.setParent(currentNode.getParent());
+                }
+                currentNode.setParent(lCh);
+                Node<T> rCh = lCh.getRightChild();
+                if (rCh != null) {
+                    rCh.setParent(currentNode);
+                }
+                currentNode.setLeftChild(rCh);
+                if (lCh != null) {
+                    lCh.setRightChild(currentNode);
+                }
             }
         } else {
             Node<T> oldRoot = getNode();
