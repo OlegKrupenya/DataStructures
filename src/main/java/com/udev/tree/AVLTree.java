@@ -37,7 +37,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     public T delete(T obj) throws IllegalArgumentException {
         T deleted = super.delete(obj);
         if (size() > 2) {
-            balanceTree(obj);
+            balanceTree();
         }
         return deleted;
     }
@@ -82,6 +82,24 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         while (tNode != null) {
             balance(tNode);
             tNode = tNode.getParent();
+        }
+    }
+
+    private void balanceTree() {
+        Node<T> tNode = this.getNode();
+        Set<T> observedNodes = new HashSet<T>();
+        while (tNode != this.getNode().getParent()) {
+            if (!observedNodes.contains(tNode.getData())) {
+                balance(tNode);
+            }
+            observedNodes.add(tNode.getData());
+            if (tNode.getLeftChild() != null && !observedNodes.contains(tNode.getLeftChild().getData())) {
+                tNode = tNode.getLeftChild();
+            } else if (tNode.getRightChild() != null && !observedNodes.contains(tNode.getRightChild().getData())) {
+                tNode = tNode.getRightChild();
+            } else {
+                tNode = tNode.getParent();
+            }
         }
     }
 
