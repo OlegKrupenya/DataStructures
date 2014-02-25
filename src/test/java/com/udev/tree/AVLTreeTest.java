@@ -39,7 +39,7 @@ public class AVLTreeTest {
         Integer rightRight = this.tree.add(14);
         Integer rightRightLeft = this.tree.add(13);
 
-        //Assert.assertEquals(9, this.tree.size());
+        Assert.assertEquals(9, this.tree.size());
         Assert.assertTrue(this.tree.contains(root));
         Assert.assertTrue(this.tree.contains(left));
         Assert.assertTrue(this.tree.contains(right));
