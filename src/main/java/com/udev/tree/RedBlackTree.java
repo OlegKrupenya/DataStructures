@@ -101,6 +101,7 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
             this.node = new Node<T>();
             data = obj;
             this.node.data = data;
+            this.node.color = Color.BLACK;
         } else {
             Node currentNode = node;
             Node parent = node;
@@ -298,5 +299,36 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
             currentNode = currentNode.rightChild;
         }
         return currentNode;
+    }
+
+    /**
+     * Returns the grandparent of the current node
+     *
+     * @param currentNode The current node
+     * @return The grandparent of the current node
+     */
+    private Node getGrandparent(Node currentNode) {
+        if ((currentNode != null) && (currentNode.getParent() != null)) {
+            return currentNode.getParent().getParent();
+        }
+        else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the uncle of the current node
+     * @param currentNode The current node
+     * @return The uncle of the current node
+     */
+    private Node getUncle(Node currentNode) {
+        Node<T> grandparent = getGrandparent(currentNode);
+        if (grandparent == null) {
+            return null;
+        }
+        if (currentNode.getParent().equals(grandparent.getLeftChild())) {
+            return grandparent.getRightChild();
+        }
+        return grandparent.getLeftChild();
     }
 }
