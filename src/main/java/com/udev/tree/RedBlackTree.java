@@ -203,7 +203,7 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
                     nodeToDelete.leftChild.parent = rightMax;
                     rightMax.leftChild = nodeToDelete.leftChild;
                     rightMax.parent = nodeToDelete.parent;
-                    nodeToDelete.parent.rightChild  = rightMax;
+                    nodeToDelete.parent.rightChild = rightMax;
                 }
                 nodeToDelete = null;
             } else {
@@ -307,21 +307,21 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
      * @param currentNode The current node
      * @return The grandparent of the current node
      */
-    private Node getGrandparent(Node currentNode) {
+    private Node<T> getGrandparent(Node<T> currentNode) {
         if ((currentNode != null) && (currentNode.getParent() != null)) {
             return currentNode.getParent().getParent();
-        }
-        else {
+        } else {
             return null;
         }
     }
 
     /**
      * Returns the uncle of the current node
+     *
      * @param currentNode The current node
      * @return The uncle of the current node
      */
-    private Node getUncle(Node currentNode) {
+    private Node<T> getUncle(Node<T> currentNode) {
         Node<T> grandparent = getGrandparent(currentNode);
         if (grandparent == null) {
             return null;
@@ -330,6 +330,14 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
             return grandparent.getRightChild();
         }
         return grandparent.getLeftChild();
+    }
+
+    private void insertCase1(Node nodeToInsert) {
+        if (nodeToInsert.getParent() == null) {
+            nodeToInsert.setColor(Color.BLACK);
+        } else {
+            insertCase2(nodeToInsert);
+        }
     }
 
     private void insertCase2(Node nodeToInsert) {
@@ -343,6 +351,15 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
     }
 
     private void insertCase3(Node nodeToInsert) {
-
+        Node<T> grandparent = getGrandparent(nodeToInsert);
+        Node<T> uncle = getUncle(nodeToInsert);
+        if (uncle != null && Color.RED.equals(uncle.getColor())) {
+            nodeToInsert.getParent().setColor(Color.BLACK);
+            uncle.setColor(Color.BLACK);
+            grandparent.setColor(Color.RED);
+            insertCase1(grandparent);
+        } else {
+            // TODO: insertCase4(nodeToInsert);
+        }
     }
 }
