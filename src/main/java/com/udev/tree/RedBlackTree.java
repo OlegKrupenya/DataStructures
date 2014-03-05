@@ -336,12 +336,12 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
         if (nodeToInsert == null) {
             throw new IllegalArgumentException("The object to add must be not null");
         }
-        if (nodeToInsert.getParent() != null && Color.BLACK.equals(nodeToInsert.getParent().getColor()) {
+        if (nodeToInsert.getParent() != null && Color.BLACK.equals(nodeToInsert.getParent().getColor())) {
             return;
         }
         insertCase3(nodeToInsert);
     }
-    
+
     private void insertCase3(Node nodeToInsert) {
 
     }
