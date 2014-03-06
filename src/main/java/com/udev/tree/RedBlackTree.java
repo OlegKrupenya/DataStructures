@@ -332,7 +332,7 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
         return grandparent.getLeftChild();
     }
 
-    private void insertCase1(Node nodeToInsert) {
+    private void insertCase1(Node<T> nodeToInsert) {
         if (nodeToInsert.getParent() == null) {
             nodeToInsert.setColor(Color.BLACK);
         } else {
@@ -340,7 +340,7 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
         }
     }
 
-    private void insertCase2(Node nodeToInsert) {
+    private void insertCase2(Node<T> nodeToInsert) {
         if (nodeToInsert == null) {
             throw new IllegalArgumentException("The object to add must be not null");
         }
@@ -350,7 +350,7 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
         insertCase3(nodeToInsert);
     }
 
-    private void insertCase3(Node nodeToInsert) {
+    private void insertCase3(Node<T> nodeToInsert) {
         Node<T> grandparent = getGrandparent(nodeToInsert);
         Node<T> uncle = getUncle(nodeToInsert);
         if (uncle != null && Color.RED.equals(uncle.getColor())) {
@@ -359,7 +359,124 @@ public class RedBlackTree<T extends Comparable<T>> implements IBinarySearchTree<
             grandparent.setColor(Color.RED);
             insertCase1(grandparent);
         } else {
-            // TODO: insertCase4(nodeToInsert);
+            insertCase4(nodeToInsert);
+        }
+    }
+
+    private void insertCase4(Node<T> nodeToInsert) {
+        Node<T> grandparent = getGrandparent(nodeToInsert);
+        if (nodeToInsert.equals(nodeToInsert.getParent().getRightChild()) && nodeToInsert.getParent()
+                .equals(grandparent.getLeftChild())) {
+            rotateLeft(nodeToInsert.getParent(), false);
+            nodeToInsert = nodeToInsert.getLeftChild();
+        } else if (nodeToInsert.equals(nodeToInsert.getParent().getLeftChild()) && nodeToInsert.getParent()
+                .equals(grandparent.getRightChild())) {
+            rotateRight(nodeToInsert.getParent(), false);
+            nodeToInsert = nodeToInsert.getRightChild();
+        }
+        insertCase5(nodeToInsert);
+    }
+
+    private void insertCase5(Node<T> nodeToInsert) {
+        Node<T> grandparent = getGrandparent(nodeToInsert);
+        nodeToInsert.getParent().setColor(Color.BLACK);
+        grandparent.setColor(Color.RED);
+        if (nodeToInsert.equals(nodeToInsert.parent.getLeftChild())) {
+            rotateLeft(grandparent, false);
+        } else {
+            rotateRight(grandparent, false);
+        }
+    }
+    
+    private void rotateLeft(Node<T> currentNode, boolean changeRootOfSubtree) {
+        if (currentNode.getParent() != null) {
+            if (changeRootOfSubtree) {
+                Node<T> oldRoot = currentNode;
+                Node<T> newRoot = currentNode.getRightChild();
+                newRoot.setParent(oldRoot.getParent());
+                oldRoot.getParent().setRightChild(newRoot);
+                Node<T> lCh = newRoot.getLeftChild();
+                if (lCh != null) {
+                    lCh.setParent(oldRoot);
+                }
+                oldRoot.setRightChild(lCh);
+                oldRoot.setParent(newRoot);
+                newRoot.setLeftChild(oldRoot);
+            } else {
+                Node<T> rCh = currentNode.getRightChild();
+                if (currentNode.getParent() != null) {
+                    currentNode.getParent().setLeftChild(rCh);
+                }
+                if (rCh != null) {
+                    rCh.setParent(currentNode.getParent());
+                }
+                currentNode.setParent(rCh);
+                Node<T> lCh = rCh.getLeftChild();
+                if (lCh != null) {
+                    lCh.setParent(currentNode);
+                }
+                currentNode.setRightChild(lCh);
+                if (rCh != null) {
+                    rCh.setLeftChild(currentNode);
+                }
+            }
+        } else {
+            Node<T> oldRoot = this.getNode();
+            this.setNode(currentNode.getRightChild());
+            this.getNode().setParent(null);
+            Node<T> lCh = getNode().getLeftChild();
+            if (lCh != null) {
+                lCh.setParent(oldRoot);
+            }
+            oldRoot.setRightChild(lCh);
+            getNode().setLeftChild(oldRoot);
+            oldRoot.setParent(getNode());
+        }
+    }
+
+    private void rotateRight(Node<T> currentNode, boolean changeRootOfSubtree) {
+        if (currentNode.getParent() != null) {
+            if (changeRootOfSubtree) {
+                Node<T> oldRoot = currentNode;
+                Node<T> newRoot = currentNode.getLeftChild();
+                newRoot.setParent(oldRoot.getParent());
+                oldRoot.getParent().setLeftChild(newRoot);
+                Node<T> rCh = newRoot.getRightChild();
+                if (rCh != null) {
+                    rCh.setParent(oldRoot);
+                }
+                oldRoot.setLeftChild(rCh);
+                oldRoot.setParent(newRoot);
+                newRoot.setRightChild(oldRoot);
+            } else {
+                Node<T> lCh = currentNode.getLeftChild();
+                if (currentNode.getParent() != null) {
+                    currentNode.getParent().setRightChild(lCh);
+                }
+                if (lCh != null) {
+                    lCh.setParent(currentNode.getParent());
+                }
+                currentNode.setParent(lCh);
+                Node<T> rCh = lCh.getRightChild();
+                if (rCh != null) {
+                    rCh.setParent(currentNode);
+                }
+                currentNode.setLeftChild(rCh);
+                if (lCh != null) {
+                    lCh.setRightChild(currentNode);
+                }
+            }
+        } else {
+            Node<T> oldRoot = getNode();
+            setNode(currentNode.getLeftChild());
+            getNode().setParent(null);
+            Node<T> rCh = getNode().getRightChild();
+            if (rCh != null) {
+                rCh.setParent(oldRoot);
+            }
+            oldRoot.setLeftChild(rCh);
+            getNode().setRightChild(oldRoot);
+            oldRoot.setParent(getNode());
         }
     }
 }
